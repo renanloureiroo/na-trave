@@ -7,11 +7,19 @@ import { HeaderProps } from "./Header.props";
 import { useNavigation, NavigationProp } from "@react-navigation/native";
 
 import BackIcon from "../../assets/icons/back.svg";
-import { AuthenticationStackType } from "../../features/Authentication/navigation/Authentication.stack";
+import Logo from "../../assets/logo/logo-fundo-vinho.svg";
+import ProfileIcon from "../../assets/icons/profile.svg";
 
+import { AuthenticationStackType } from "../../features/Authentication/navigation/Authentication.stack";
 const StyledBorderlessButton = styled(BorderlessButton);
 
-export const Header = ({ title, iconFunction }: HeaderProps) => {
+export const Header = ({
+  title,
+  iconFunction,
+  big = false,
+  name,
+  fullName,
+}: HeaderProps) => {
   const { goBack } = useNavigation<NavigationProp<AuthenticationStackType>>();
 
   const handleGoBack = () => {
@@ -19,6 +27,25 @@ export const Header = ({ title, iconFunction }: HeaderProps) => {
   };
 
   const onPress = iconFunction || handleGoBack;
+
+  if (big) {
+    return (
+      <View className="w-full justify-between h-56 px-5 py-8 bg-brand-red2">
+        <View className="flex-row w-full items-center justify-between">
+          <Logo width={80} height={24} />
+
+          <ProfileIcon width={32} height={32} color={"#F4F6FF"} />
+        </View>
+        <View>
+          <Text className="text-base text-brand-gray3 mb-3">Olá, {name}!</Text>
+
+          <Text className="text-brand-white1 text-3xl font-bold">
+            {fullName ? fullName : "Qual é o seu palpite?"}
+          </Text>
+        </View>
+      </View>
+    );
+  }
 
   return (
     <View className="w-full flex-row items-center mb-8">
