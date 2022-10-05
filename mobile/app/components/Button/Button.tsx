@@ -44,7 +44,7 @@ export const Button = ({
       {...rest}
     >
       <View
-        className="w-full h-full justify-center items-center border border-brand-white1"
+        className="w-full h-full justify-center rounded-2xl items-center border border-brand-white1"
         accessibilityRole="button"
       >
         <Text className="text-brand-white1 text-base font-bold">{title}</Text>

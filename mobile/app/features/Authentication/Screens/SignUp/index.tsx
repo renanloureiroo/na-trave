@@ -14,10 +14,10 @@ import {
 
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-
-import { Button } from "../../../components/Button/Button";
-import { Header } from "../../../components/Header/Header";
-import { Input } from "../../../components/Input/Input";
+import { Header } from "../../../../components/Header/Header";
+import { Input } from "../../../../components/Input/Input";
+import { Button } from "../../../../components/Button/Button";
+import { fireEvent } from "@testing-library/react-native";
 
 const schema = yup.object({
   name: yup.string().required("Campo obrigatório!"),
@@ -102,6 +102,7 @@ export const SignUp = () => {
                 ref={inputRefPassword}
                 autoCorrect={false}
                 autoCapitalize="none"
+                password
                 error={!!errors.password && (errors.password.message as string)}
               />
             </ScrollView>

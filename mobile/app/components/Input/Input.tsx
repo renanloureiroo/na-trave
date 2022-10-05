@@ -3,9 +3,23 @@ import { Controller } from "react-hook-form";
 import { TextInput, View, Text } from "react-native";
 import { InputProps } from "./Input.props";
 
+import Icon from "@expo/vector-icons/MaterialIcons";
+import { BorderlessButton } from "react-native-gesture-handler";
+import { styled } from "nativewind";
+
+const StyledBorderlessButton = styled(BorderlessButton);
+
 export const Input = forwardRef<TextInput, InputProps>(
-  ({ label, control, name, error, onFocus, onBlur, ...rest }, ref) => {
+  (
+    { label, control, name, password = false, error, onFocus, onBlur, ...rest },
+    ref
+  ) => {
     const [isFocused, setIsFocused] = useState<boolean>(false);
+    const [isVisible, setIsVisible] = useState<boolean>(true);
+
+    const handleToggleVisibility = () => {
+      setIsVisible((state) => !state);
+    };
 
     return (
       <Controller
@@ -30,6 +44,7 @@ export const Input = forwardRef<TextInput, InputProps>(
               <TextInput
                 ref={ref}
                 value={value}
+                secureTextEntry={password && isVisible}
                 onFocus={(e) => {
                   setIsFocused(true);
                   onFocus && onFocus(e);
@@ -42,6 +57,23 @@ export const Input = forwardRef<TextInput, InputProps>(
                 className="flex-1 text-base px-2 pb-1"
                 {...rest}
               />
+
+              {password &&
+                (isVisible ? (
+                  <StyledBorderlessButton
+                    onPress={handleToggleVisibility}
+                    className="mx-2"
+                  >
+                    <Icon name="visibility-off" color={"#91949D"} size={24} />
+                  </StyledBorderlessButton>
+                ) : (
+                  <StyledBorderlessButton
+                    onPress={handleToggleVisibility}
+                    className="mx-2"
+                  >
+                    <Icon name="visibility" color={"#91949D"} size={24} />
+                  </StyledBorderlessButton>
+                ))}
             </View>
 
             {error && <Text className="text-red-600 text-sm">{error}</Text>}

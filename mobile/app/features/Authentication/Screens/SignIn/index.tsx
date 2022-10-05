@@ -50,7 +50,7 @@ export const SignIn = () => {
             autoFocus
             autoCapitalize="none"
             control={control}
-            onBlur={() => inputRefPassword.current.focus()}
+            onSubmitEditing={() => inputRefPassword.current.focus()}
             name="email"
           />
           <Input
@@ -60,6 +60,7 @@ export const SignIn = () => {
             ref={inputRefPassword}
             control={control}
             name="password"
+            password
           />
         </ScrollView>
         <Button title="Entrar" theme="dark" />

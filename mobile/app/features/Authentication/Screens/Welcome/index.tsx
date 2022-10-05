@@ -4,7 +4,23 @@ import { Button } from "../../../../components/Button/Button";
 import ImageBackground from "../../../../assets/imagem/img.png";
 import Logo from "../../../../assets/logo/logo-fundo-vermelho.svg";
 
+import {
+  useNavigation,
+  NavigationProp,
+  ParamListBase,
+} from "@react-navigation/native";
+import { AuthenticationStackType } from "../../navigation/Authentication.stack";
+
 export const Welcome = () => {
+  const { navigate } = useNavigation<NavigationProp<AuthenticationStackType>>();
+
+  const handleNavigateToSignUp = () => {
+    navigate("SignUp");
+  };
+  const handleNavigateToSignIN = () => {
+    navigate("SignIn");
+  };
+
   return (
     <SafeAreaView className={`flex-1 bg-brand-red1`}>
       <View className="flex-1 items-center p-5">
@@ -19,9 +35,13 @@ export const Welcome = () => {
           Dê o seu palpite na{"\n"}Copa do Mundo do{"\n"}Catar 2022!{" "}
         </Text>
 
-        <Button title={"Criar minha conta"} />
+        <Button title={"Criar minha conta"} onPress={handleNavigateToSignUp} />
 
-        <Button variant="secondary" title={"Fazer login"} />
+        <Button
+          variant="secondary"
+          title={"Fazer login"}
+          onPress={handleNavigateToSignIN}
+        />
       </View>
     </SafeAreaView>
   );
