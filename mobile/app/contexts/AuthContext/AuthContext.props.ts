@@ -1,5 +1,3 @@
-import { ReactNode } from "react";
-
 export type User = {
   id: string;
   name: string;
@@ -8,8 +6,4 @@ export type User = {
 
 export type AuthContextType = {
   user: User;
-};
-
-export type AuthContextProviderType = {
-  children: ReactNode;
 };
