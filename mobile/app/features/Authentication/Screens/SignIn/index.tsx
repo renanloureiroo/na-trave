@@ -2,10 +2,13 @@ import React, { useRef } from "react";
 import { StatusBar } from "expo-status-bar";
 import { useForm } from "react-hook-form";
 import {
+  Keyboard,
+  KeyboardAvoidingView,
   Platform,
   SafeAreaView,
   ScrollView,
   TextInput,
+  TouchableWithoutFeedback,
   View,
 } from "react-native";
 import { Header } from "../../../../components/Header/Header";
@@ -34,37 +37,45 @@ export const SignIn = () => {
 
   const inputRefPassword = useRef<TextInput>(null);
   return (
-    <SafeAreaView
-      className={`flex-1 bg-brand-white1 ${
-        Platform.OS === "android" && "pt-6"
-      }`}
-    >
-      <View className="flex-1 p-5">
-        <StatusBar translucent backgroundColor="transparent" style="dark" />
-        <Header title="Entre na sua conta" />
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <SafeAreaView
+        className={`flex-1 bg-brand-white1 ${
+          Platform.OS === "android" && "pt-6"
+        }`}
+      >
+        <KeyboardAvoidingView
+          enabled
+          behavior={Platform.OS === "ios" ? "padding" : undefined}
+          className="flex-1"
+        >
+          <View className="flex-1 p-5">
+            <StatusBar translucent backgroundColor="transparent" style="dark" />
+            <Header title="Entre na sua conta" />
 
-        <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-          <Input
-            label="Seu e-mail"
-            autoCorrect={false}
-            autoFocus
-            autoCapitalize="none"
-            control={control}
-            onSubmitEditing={() => inputRefPassword.current.focus()}
-            name="email"
-          />
-          <Input
-            label="Sua senha"
-            autoCorrect={false}
-            autoCapitalize="none"
-            ref={inputRefPassword}
-            control={control}
-            name="password"
-            password
-          />
-        </ScrollView>
-        <Button title="Entrar" theme="dark" />
-      </View>
-    </SafeAreaView>
+            <ScrollView showsVerticalScrollIndicator={false}>
+              <Input
+                label="Seu e-mail"
+                autoCorrect={false}
+                autoFocus
+                autoCapitalize="none"
+                control={control}
+                onSubmitEditing={() => inputRefPassword.current.focus()}
+                name="email"
+              />
+              <Input
+                label="Sua senha"
+                autoCorrect={false}
+                autoCapitalize="none"
+                ref={inputRefPassword}
+                control={control}
+                name="password"
+                password
+              />
+            </ScrollView>
+            <Button title="Entrar" theme="dark" />
+          </View>
+        </KeyboardAvoidingView>
+      </SafeAreaView>
+    </TouchableWithoutFeedback>
   );
 };

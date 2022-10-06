@@ -63,7 +63,7 @@ export const SignUp = () => {
           <View className="flex-1 p-5">
             <Header title="Crie sua conta" />
 
-            <ScrollView showsVerticalScrollIndicator={false} className="flex-1">
+            <ScrollView showsVerticalScrollIndicator={false}>
               <Input
                 label="Seu nome"
                 control={control}
