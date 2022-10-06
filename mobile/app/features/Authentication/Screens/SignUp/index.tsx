@@ -107,7 +107,7 @@ export const SignUp = () => {
               />
             </ScrollView>
             <Button
-              title="Crie sua conta"
+              title="Crie minha conta"
               theme="dark"
               onPress={handleSubmit(handleCreateAccount)}
             />
