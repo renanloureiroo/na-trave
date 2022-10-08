@@ -1,6 +1,6 @@
 import { SafeAreaView, Text, View } from "react-native";
 
-import { Header } from "../../../../components/Header/Header";
+import { Header } from "../../../../components/Header";
 export const Home = () => {
   return (
     <SafeAreaView className="flex-1">

@@ -14,7 +14,7 @@ export default function App() {
       <StatusBar translucent backgroundColor="transparent" style="light" />
       <AuthContextProvider>
         <NavigationContainer>
-          {user ? <HomeStack /> : <AuthenticationStack />}
+          {!user ? <HomeStack /> : <AuthenticationStack />}
         </NavigationContainer>
       </AuthContextProvider>
     </GestureHandlerRootView>
