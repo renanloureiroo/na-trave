@@ -1,8 +1,8 @@
 import React from "react";
 import { Image, SafeAreaView, Text, View } from "react-native";
 
-import ImageBackground from "../../../../assets/imagem/img.png";
-import Logo from "../../../../assets/logo/logo-fundo-vermelho.svg";
+import ImageBackground from "@assets/images/img.png";
+import Logo from "@assets/logo/logo-fundo-vermelho.svg";
 
 import {
   useNavigation,
@@ -10,7 +10,7 @@ import {
   ParamListBase,
 } from "@react-navigation/native";
 import { AuthenticationStackType } from "../../navigation/Authentication.stack";
-import { Button } from "../../../../components/Button";
+import { Button } from "@components/Button";
 
 export const Welcome = () => {
   const { navigate } = useNavigation<NavigationProp<AuthenticationStackType>>();

@@ -14,11 +14,10 @@ import {
 
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { Header } from "../../../../components/Header";
-import { Input } from "../../../../components/Input";
+import { Header } from "@components/Header";
+import { Input } from "@components/Input";
 
-import { fireEvent } from "@testing-library/react-native";
-import { Button } from "../../../../components/Button";
+import { Button } from "@components/Button";
 
 const schema = yup.object({
   name: yup.string().required("Campo obrigatório!"),

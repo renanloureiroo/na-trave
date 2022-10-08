@@ -11,12 +11,13 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { Header } from "../../../../components/Header";
+import { Header } from "@components/Header";
 
-import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { Button } from "../../../../components/Button";
-import { Input } from "../../../../components/Input";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+import { Button } from "@components/Button";
+import { Input } from "@components/Input";
 
 const schema = yup.object({
   email: yup.string().email("E-mail inválido").required("Campo obrigatório!"),

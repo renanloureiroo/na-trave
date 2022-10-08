@@ -6,9 +6,9 @@ import { HeaderProps } from "./Header.props";
 
 import { useNavigation, NavigationProp } from "@react-navigation/native";
 
-import BackIcon from "../../assets/icons/back.svg";
-import Logo from "../../assets/logo/logo-fundo-vinho.svg";
-import ProfileIcon from "../../assets/icons/profile.svg";
+import BackIcon from "@assets/icons/back.svg";
+import Logo from "@assets/logo/logo-fundo-vinho.svg";
+import ProfileIcon from "@assets/icons/profile.svg";
 
 import { AuthenticationStackType } from "../../features/Authentication/navigation/Authentication.stack";
 const StyledBorderlessButton = styled(BorderlessButton);
@@ -30,7 +30,7 @@ export const Header = ({
 
   if (big) {
     return (
-      <View className="w-full justify-between h-56 px-5 py-8 bg-brand-red2">
+      <View className="w-full justify-between h-56 px-5 py-8 pt-11 bg-brand-red2">
         <View className="flex-row w-full items-center justify-between">
           <Logo width={80} height={24} />
 
