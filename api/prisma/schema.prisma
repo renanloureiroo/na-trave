@@ -27,14 +27,16 @@ model User {
 
 model Game {
   id       String @id @default(cuid())
-  teamA    String
-  teamB    String
+  homeTeam String
+  awayTeam String
   gameTime String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   Hunches Hunch[]
+
+  @@unique([homeTeam, awayTeam, gameTime])
 }
 
 model Hunch {
@@ -43,10 +45,10 @@ model Hunch {
   userId String
   user   User   @relation(fields: [userId], references: [id])
 
-  gameId String
-  game   Game   @relation(fields: [gameId], references: [id])
-  teamA  Int
-  teamB  Int
+  gameId   String
+  game     Game   @relation(fields: [gameId], references: [id])
+  homeTeam Int
+  awayTeam Int
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
