@@ -1,7 +1,6 @@
 import bcrypt from "bcrypt";
 
-import { sign } from "jsonwebtoken";
-
+import jwt from "jsonwebtoken";
 import { prisma } from "../../../../database/prisma/index.js";
 
 class AuthenticationService {
@@ -11,6 +10,8 @@ class AuthenticationService {
         email,
       },
     });
+
+    console.log(user);
 
     if (!user) {
       throw new Error("Email ou password incorrect!");
@@ -22,7 +23,7 @@ class AuthenticationService {
       throw new Error("Email ou password incorrect!");
     }
 
-    const accessToken = sign(
+    const accessToken = jwt.sign(
       {
         id: user.id,
         name: user.name,
@@ -34,6 +35,24 @@ class AuthenticationService {
         expiresIn: 60 * 15, // 15 min
       }
     );
+
+    const refreshToken = jwt.sign(
+      {
+        id: user.id,
+        name: user.name,
+        username: user.username,
+      },
+      process.env.JWT_SCRET_KEY,
+      {
+        subject: user.id,
+        expiresIn: "15d", // 15 daysß
+      }
+    );
+
+    return {
+      accessToken,
+      refreshToken,
+    };
   }
 }
 
