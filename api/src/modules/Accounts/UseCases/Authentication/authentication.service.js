@@ -32,7 +32,7 @@ class AuthenticationService {
       process.env.JWT_SCRET_KEY,
       {
         subject: user.id,
-        expiresIn: 60 * 15, // 15 min
+        expiresIn: "1d", // 1 day
       }
     );
 
@@ -45,7 +45,7 @@ class AuthenticationService {
       process.env.JWT_SCRET_KEY,
       {
         subject: user.id,
-        expiresIn: "15d", // 15 daysß
+        expiresIn: "15d", // 15 days
       }
     );
 
