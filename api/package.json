@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "type": "module",
-  "main": "server.js",
+  "main": "./src/shared/server.js",
   "scripts": {
     "gen": "prisma generate",
     "push": "prisma db push",
-    "dev": "nodemon server.js",
+    "dev": "nodemon ./src/shared/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "prisma": {

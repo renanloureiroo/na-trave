@@ -1,4 +1,4 @@
-import { app } from "./setup.js";
+import { app } from "./config/setup.js";
 
 const PORT = 3000;
 

@@ -1,8 +1,11 @@
 import { Router } from "express";
-import { ensureAuthenticated } from "../middlewares/ensureAuthenticated.js";
+
 import CreateHunch from "../modules/Hunchs/useCases/CreateHunch/createHunch.controller.js";
+import listHunchsController from "../modules/Hunchs/useCases/listHunchs/listHunchs.controller.js";
+
 const router = Router();
 
-router.post("/", ensureAuthenticated, CreateHunch.handle);
+router.get("/", listHunchsController.handle);
+router.post("/", CreateHunch.handle);
 
 export { router };
