@@ -1,5 +1,6 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { StatusBar } from "expo-status-bar";
+import jwt from "jwt-decode";
 import { useForm } from "react-hook-form";
 import {
   Keyboard,
@@ -18,6 +19,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 import { Button } from "@components/Button";
 import { Input } from "@components/Input";
+import { api } from "@services/api";
+import { useAuth } from "@contexts/AuthContext";
+import { User } from "@contexts/AuthContext/AuthContext.props";
 
 const schema = yup.object({
   email: yup.string().email("E-mail inválido").required("Campo obrigatório!"),
@@ -28,6 +32,8 @@ const schema = yup.object({
 });
 
 export const SignIn = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { updatedCredentials, onSignIn } = useAuth();
   const {
     control,
     handleSubmit,
@@ -35,6 +41,32 @@ export const SignIn = () => {
   } = useForm({
     resolver: yupResolver(schema),
   });
+
+  const handleSignIn = async (values) => {
+    setIsLoading(true);
+    try {
+      const { data } = await api.post(
+        "/users/signin",
+        {
+          email: values.email,
+          password: values.password,
+        },
+        {
+          headers: { "content-type": "application/x-www-form-urlencoded" },
+        }
+      );
+
+      const { accessToken, refreshToken } = data;
+      const { id, name, username } = jwt(accessToken) as User;
+
+      updatedCredentials({ accessToken, refreshToken });
+      onSignIn({ id, name, username });
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const inputRefPassword = useRef<TextInput>(null);
   return (
@@ -62,6 +94,7 @@ export const SignIn = () => {
                 control={control}
                 onSubmitEditing={() => inputRefPassword.current.focus()}
                 name="email"
+                error={errors.email && (errors.email.message as string)}
               />
               <Input
                 label="Sua senha"
@@ -71,9 +104,16 @@ export const SignIn = () => {
                 control={control}
                 name="password"
                 password
+                error={errors.password && (errors.password.message as string)}
               />
             </ScrollView>
-            <Button title="Entrar" theme="dark" />
+            <Button
+              disabled={isLoading}
+              loading={isLoading}
+              title="Entrar"
+              theme="dark"
+              onPress={handleSubmit(handleSignIn)}
+            />
           </View>
         </KeyboardAvoidingView>
       </SafeAreaView>

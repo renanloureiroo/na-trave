@@ -6,6 +6,7 @@ import { AuthenticationStack } from "./app/features/Authentication/navigation/Au
 import { Home } from "./app/features/Home/Screens/Home";
 import { HomeStack } from "./app/features/Home/navigation/Home.stack";
 import { AuthContextProvider, useAuth } from "./app/contexts/AuthContext";
+import { MainStack } from "./app/navigation/main";
 
 export default function App() {
   const { user } = useAuth();
@@ -14,7 +15,7 @@ export default function App() {
       <StatusBar translucent backgroundColor="transparent" style="light" />
       <AuthContextProvider>
         <NavigationContainer>
-          {!user ? <HomeStack /> : <AuthenticationStack />}
+          <MainStack />
         </NavigationContainer>
       </AuthContextProvider>
     </GestureHandlerRootView>

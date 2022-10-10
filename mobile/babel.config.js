@@ -12,6 +12,7 @@ module.exports = function (api) {
             "@components": "./app/components",
             "@contexts": "./app/contexts",
             "@assets": "./app/assets",
+            "@services": "./app/services",
           },
         },
       ],

@@ -1,5 +1,12 @@
-import React, { createContext, useState, ReactNode, useContext } from "react";
-import { AuthContextType, User } from "./AuthContext.props";
+import React, {
+  createContext,
+  useState,
+  ReactNode,
+  useContext,
+  useCallback,
+  useEffect,
+} from "react";
+import { AuthContextType, User, Credentials } from "./AuthContext.props";
 
 type AuthContextProviderType = {
   children: ReactNode;
@@ -8,10 +15,27 @@ type AuthContextProviderType = {
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 
 export const AuthContextProvider = ({ children }: AuthContextProviderType) => {
-  const [user, setUser] = useState<User>({} as User);
+  const [user, setUser] = useState<User>(null);
+  const [credentials, setCredentials] = useState<Credentials>(null);
+
+  const updatedCredentials = useCallback((credentials: Credentials) => {
+    setCredentials(credentials);
+  }, []);
+
+  const onSignIn = useCallback((user: User) => {
+    setUser(user);
+  }, []);
+
+  useEffect(() => {
+    console.log("USER", user);
+
+    console.log("TOKENS", credentials);
+  }, [user, credentials]);
 
   return (
-    <AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ user, updatedCredentials, onSignIn }}>
+      {children}
+    </AuthContext.Provider>
   );
 };
 

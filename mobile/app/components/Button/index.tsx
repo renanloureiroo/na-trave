@@ -1,10 +1,11 @@
 import React from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, ActivityIndicator } from "react-native";
 
 import { ButtonProps } from "./Button.props";
 
 export const Button = ({
   title,
+  loading = false,
   backgroundColor = "#AF053F",
   variant = "primary",
   theme = "light",
@@ -24,13 +25,17 @@ export const Button = ({
           accessibilityRole="button"
           className={`w-full h-full items-center justify-center`}
         >
-          <Text
-            className={`${
-              theme === "light" ? "text-brand-red1" : "text-brand-white1"
-            } text-base font-bold`}
-          >
-            {title}
-          </Text>
+          {loading ? (
+            <ActivityIndicator size={32} color="#ffffff" />
+          ) : (
+            <Text
+              className={`${
+                theme === "light" ? "text-brand-red1" : "text-brand-white1"
+              } text-base font-bold`}
+            >
+              {title}
+            </Text>
+          )}
         </View>
       </TouchableOpacity>
     );
@@ -47,7 +52,11 @@ export const Button = ({
         className="w-full h-full justify-center rounded-2xl items-center border border-brand-white1"
         accessibilityRole="button"
       >
-        <Text className="text-brand-white1 text-base font-bold">{title}</Text>
+        {loading ? (
+          <ActivityIndicator size={32} color="#ffffff" />
+        ) : (
+          <Text className="text-brand-white1 text-base font-bold">{title}</Text>
+        )}
       </View>
     </TouchableOpacity>
   );

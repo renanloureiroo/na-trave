@@ -4,6 +4,13 @@ export type User = {
   username: string;
 };
 
+export type Credentials = {
+  accessToken: string;
+  refreshToken: string;
+};
+
 export type AuthContextType = {
   user: User;
+  updatedCredentials: (credentials: Credentials) => void;
+  onSignIn: (user: User) => void;
 };
