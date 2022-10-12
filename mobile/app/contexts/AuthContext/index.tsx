@@ -1,3 +1,4 @@
+import * as SplashScreen from "expo-splash-screen";
 import { useAsyncStorage } from "../../hooks/useAsyncStorage";
 import React, {
   createContext,
@@ -8,6 +9,7 @@ import React, {
   useEffect,
 } from "react";
 import { AuthContextType, User, Credentials } from "./AuthContext.props";
+import { api } from "@services/api";
 
 type AuthContextProviderType = {
   children: ReactNode;
@@ -21,7 +23,6 @@ const CREDENTIALS_KEY = "naTrave:credentials";
 export const AuthContextProvider = ({ children }: AuthContextProviderType) => {
   const [user, setUser] = useState<User>(null);
   const [credentials, setCredentials] = useState<Credentials>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const { getData, setData } = useAsyncStorage();
 
@@ -30,9 +31,11 @@ export const AuthContextProvider = ({ children }: AuthContextProviderType) => {
     setCredentials(credentials);
   }, []);
 
-  const onSignIn = useCallback(async (user: User) => {
+  const onSignIn = useCallback(async (user: User, credentials: Credentials) => {
     await setData(USER_KEY, user);
+    await setData(CREDENTIALS_KEY, credentials);
     setUser(user);
+    setCredentials(credentials);
   }, []);
 
   useEffect(() => {
@@ -46,13 +49,18 @@ export const AuthContextProvider = ({ children }: AuthContextProviderType) => {
         setUser(userData);
       } catch (err) {
         console.log(err);
-      } finally {
-        setIsLoading(false);
       }
     };
-
     rehydrated();
   }, []);
+
+  useEffect(() => {
+    if (credentials) {
+      api.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${credentials.accessToken}`;
+    }
+  }, [credentials]);
 
   return (
     <AuthContext.Provider value={{ user, updatedCredentials, onSignIn }}>

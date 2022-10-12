@@ -8,17 +8,20 @@ import { ptBR } from "date-fns/locale";
 import IconArrowLeft from "@assets/icons/arrow-left.svg";
 import IconArrowRight from "@assets/icons/arrow-right.svg";
 
-const initialDate = "2022-11-20T00:00:00Z";
-export const DateSelect = () => {
-  const [currentDate, setCurrentDate] = useState(new Date(initialDate));
+interface DateSelectProps {
+  date: Date;
+  onSetDate: (date: Date) => void;
+}
+
+export const DateSelect = ({ date, onSetDate }: DateSelectProps) => {
   const prevDay = () => {
-    const nextDate = subDays(currentDate, 1);
-    setCurrentDate(nextDate);
+    const nextDate = subDays(date, 1);
+    onSetDate(nextDate);
   };
 
   const nextDay = () => {
-    const nextDate = addDays(currentDate, 1);
-    setCurrentDate(nextDate);
+    const nextDate = addDays(date, 1);
+    onSetDate(nextDate);
   };
   return (
     <View className="flex-row my-8 w-full items-center justify-center">
@@ -27,7 +30,7 @@ export const DateSelect = () => {
       </BorderlessButton>
 
       <Text className="mx-8 font-bold text-base text-brand-red1">
-        {format(currentDate, "d 'de' MMMM", { locale: ptBR })}
+        {format(date, "d 'de' MMMM", { locale: ptBR })}
       </Text>
 
       <BorderlessButton onPress={nextDay}>

@@ -60,7 +60,7 @@ export const SignIn = () => {
       const { id, name, username } = jwt(accessToken) as User;
 
       updatedCredentials({ accessToken, refreshToken });
-      onSignIn({ id, name, username });
+      onSignIn({ id, name, username }, { accessToken, refreshToken });
     } catch (err) {
       console.log(err);
     } finally {
