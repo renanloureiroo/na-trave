@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Image, ImageSourcePropType, Text, View } from "react-native";
 import { InputCircle } from "../InputCircle";
 import { CardProps } from "./Card.props";
@@ -6,8 +6,12 @@ import { format } from "date-fns/esm";
 
 import { flags } from "../../utils/flags";
 
-export const Card = ({ data }: CardProps) => {
+export const Card = ({ data, onSubmitEditing }: CardProps) => {
   const timeFormatted = format(new Date(data.gameTime), "HH");
+
+  const [homeTeamScore, setHomeScore] = useState<number>(data.homeTeam.score);
+  const [awayTeamScore, setAwayScore] = useState<number>(data.awayTeam.score);
+  const gameId = data.id;
 
   return (
     <View className="rounded-2xl items-center p-4 border border-brand-gray3">
@@ -21,10 +25,34 @@ export const Card = ({ data }: CardProps) => {
           resizeMode="contain"
         />
 
-        <InputCircle value={String(data.homeTeam.score)} />
+        <InputCircle
+          value={String(homeTeamScore)}
+          onBlur={async () =>
+            await onSubmitEditing(
+              {
+                homeTeamScore: Number(homeTeamScore),
+                awayTeamScore: Number(awayTeamScore),
+              },
+              gameId
+            )
+          }
+          onChangeText={(value) => setHomeScore(Number(value))}
+        />
         <Text className="text-base text-brand-red2 ">X</Text>
 
-        <InputCircle value={String(data.awayTeam.score)} />
+        <InputCircle
+          onChangeText={(value) => setAwayScore(Number(value))}
+          value={String(awayTeamScore)}
+          onBlur={async () =>
+            await onSubmitEditing(
+              {
+                homeTeamScore: Number(homeTeamScore),
+                awayTeamScore: Number(awayTeamScore),
+              },
+              gameId
+            )
+          }
+        />
 
         <Image
           source={data.awayTeam.flag}

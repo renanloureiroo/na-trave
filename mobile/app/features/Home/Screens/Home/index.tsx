@@ -53,6 +53,11 @@ export type GameType = {
   awayTeam: TeamType;
 };
 
+export type ScoresType = {
+  homeTeamScore?: number;
+  awayTeamScore?: number;
+};
+
 const initialDate = "2022-11-20T00:00:00Z";
 export const Home = () => {
   const [games, setGames] = useState<GameType[]>([]);
@@ -63,6 +68,7 @@ export const Home = () => {
   const handleSetCurrentDate = useCallback((date: Date) => {
     setCurrentDate(date);
   }, []);
+
   const fetchData = async () => {
     try {
       const { data } = await api.get<ResponseType[]>("/games");
@@ -94,8 +100,6 @@ export const Home = () => {
         };
       });
 
-      console.log(JSON.stringify(dataFormatted, null, 2));
-
       setGames(dataFormatted);
     } catch (err) {
       console.log(err);
@@ -116,6 +120,18 @@ export const Home = () => {
     }
   });
 
+  const handleSendScore = useCallback(
+    async (scores: ScoresType, gameId: string) => {
+      const response = await api.post("/hunchs", {
+        gameId,
+        ...scores,
+      });
+
+      console.log(response);
+    },
+    []
+  );
+
   return (
     <View className="flex-1 bg-brand-white1">
       <Header big name="Renan" />
@@ -130,7 +146,9 @@ export const Home = () => {
             <View style={[{ height: 10 }, highlighted && { marginLeft: 0 }]} />
           ))
         }
-        renderItem={({ item }) => <Card data={item} />}
+        renderItem={({ item }) => (
+          <Card onSubmitEditing={handleSendScore} data={item} />
+        )}
         keyExtractor={(item) => item.id}
         className="px-6"
       />
