@@ -9,7 +9,7 @@ import { router as gamesRouter } from "./games.js";
 const router = Router();
 
 router.use("/users", usersRouter);
-router.use("/games", gamesRouter);
+router.use("/games", ensureAuthenticated, gamesRouter);
 router.use("/hunchs", ensureAuthenticated, hunchsRouter);
 
 export { router };

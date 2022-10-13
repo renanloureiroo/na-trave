@@ -2,7 +2,6 @@ import CreateHunchService from "./createHunch.service.js";
 
 class CreateHunchController {
   async handle(req, res) {
-    console.log("Entrou no controller");
     const { gameId, homeTeamScore, awayTeamScore } = req.body;
     const userId = req.user.id;
 
@@ -10,8 +9,8 @@ class CreateHunchController {
       const hunch = await CreateHunchService.execute({
         userId,
         gameId,
-        homeTeamScore: Number(homeTeamScore),
-        awayTeamScore: Number(awayTeamScore),
+        homeTeamScore,
+        awayTeamScore,
       });
 
       return res.status(201).json({

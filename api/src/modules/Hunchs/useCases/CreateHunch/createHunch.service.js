@@ -11,8 +11,8 @@ class CreateHunch {
     const data = {
       userId,
       gameId,
-      homeTeamScore,
-      awayTeamScore,
+      homeTeamScore: Number(homeTeamScore),
+      awayTeamScore: Number(awayTeamScore),
     };
 
     const hunchAlreadyExists = await prisma.hunch.findFirst({
@@ -32,7 +32,7 @@ class CreateHunch {
     }
 
     return await prisma.hunch.create({
-      data: data,
+      data,
     });
   }
 }
