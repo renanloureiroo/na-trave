@@ -4,17 +4,15 @@ import { InputCircle } from "../InputCircle";
 import { CardProps } from "./Card.props";
 import { format } from "date-fns/esm";
 
-import { flags } from "../../utils/flags";
-
 export const Card = ({ data, onSubmitEditing }: CardProps) => {
-  const timeFormatted = format(new Date(data.gameTime), "HH");
+  const timeFormatted = format(new Date(data.gameTime), "HH:mm");
 
   const [homeTeamScore, setHomeScore] = useState<number>(data.homeTeam.score);
   const [awayTeamScore, setAwayScore] = useState<number>(data.awayTeam.score);
   const gameId = data.id;
 
   return (
-    <View className="rounded-2xl items-center p-4 border border-brand-gray3">
+    <View className="mb-2 rounded-2xl items-center p-4 border border-brand-gray3">
       <Text>{timeFormatted}</Text>
 
       <View className="flex-row w-full mt-2 items-center justify-between">
@@ -38,7 +36,7 @@ export const Card = ({ data, onSubmitEditing }: CardProps) => {
           }
           onChangeText={(value) => setHomeScore(Number(value))}
         />
-        <Text className="text-base text-brand-red2 ">X</Text>
+        <Text className="text-base text-brand-red2">X</Text>
 
         <InputCircle
           onChangeText={(value) => setAwayScore(Number(value))}

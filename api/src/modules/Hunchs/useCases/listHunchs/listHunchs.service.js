@@ -2,7 +2,7 @@ import { prisma } from "../../../../database/prisma/index.js";
 
 class ListHunchsService {
   async execute(userId) {
-    return await prisma.hunch.findMany({
+    const hunchs = await prisma.hunch.findMany({
       where: {
         userId,
       },
@@ -10,6 +10,7 @@ class ListHunchsService {
         game: true,
       },
     });
+    return hunchs;
   }
 }
 

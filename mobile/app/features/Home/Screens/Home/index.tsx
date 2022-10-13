@@ -8,6 +8,8 @@ import { Card } from "@components/Card";
 import { api } from "@services/api";
 
 import { flags } from "../../../../utils/flags";
+import { HomeStackType } from "../../navigation/Home.stack";
+import { NavigationProp, useNavigation } from "@react-navigation/native";
 
 const data = [
   {
@@ -62,6 +64,7 @@ const initialDate = "2022-11-20T00:00:00Z";
 export const Home = () => {
   const [games, setGames] = useState<GameType[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { navigate } = useNavigation<NavigationProp<HomeStackType>>();
 
   const [currentDate, setCurrentDate] = useState(new Date(initialDate));
 
@@ -127,25 +130,23 @@ export const Home = () => {
         ...scores,
       });
 
-      console.log(response);
+      await fetchData();
     },
     []
   );
 
+  const handleGoProfile = useCallback(() => {
+    navigate("Profile");
+  }, []);
+
   return (
     <View className="flex-1 bg-brand-white1">
-      <Header big name="Renan" />
+      <Header big name="Renan" iconFunction={handleGoProfile} />
 
       <DateSelect date={currentDate} onSetDate={handleSetCurrentDate} />
 
       <FlatList
         data={gamesFiltered}
-        ItemSeparatorComponent={
-          Platform.OS !== "android" &&
-          (({ highlighted }) => (
-            <View style={[{ height: 10 }, highlighted && { marginLeft: 0 }]} />
-          ))
-        }
         renderItem={({ item }) => (
           <Card onSubmitEditing={handleSendScore} data={item} />
         )}

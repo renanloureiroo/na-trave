@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Home } from "../Screens/Home";
 import { Profile } from "../Screens/Profile";
 
-type HomeStackType = {
+export type HomeStackType = {
   Home: {};
   Profile: {};
 };

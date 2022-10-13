@@ -13,4 +13,5 @@ export type AuthContextType = {
   user: User;
   updatedCredentials: (credentials: Credentials) => void;
   onSignIn: (user: User, credentials: Credentials) => void;
+  onSignOut: () => void;
 };

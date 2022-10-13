@@ -24,7 +24,7 @@ export const AuthContextProvider = ({ children }: AuthContextProviderType) => {
   const [user, setUser] = useState<User>(null);
   const [credentials, setCredentials] = useState<Credentials>(null);
 
-  const { getData, setData } = useAsyncStorage();
+  const { getData, setData, clear } = useAsyncStorage();
 
   const updatedCredentials = useCallback(async (credentials: Credentials) => {
     await setData(CREDENTIALS_KEY, credentials);
@@ -36,6 +36,13 @@ export const AuthContextProvider = ({ children }: AuthContextProviderType) => {
     await setData(CREDENTIALS_KEY, credentials);
     setUser(user);
     setCredentials(credentials);
+  }, []);
+
+  const onSignOut = useCallback(async () => {
+    await Promise.all([clear(USER_KEY), clear(CREDENTIALS_KEY)]);
+
+    setUser(null);
+    setCredentials(null);
   }, []);
 
   useEffect(() => {
@@ -63,7 +70,9 @@ export const AuthContextProvider = ({ children }: AuthContextProviderType) => {
   }, [credentials]);
 
   return (
-    <AuthContext.Provider value={{ user, updatedCredentials, onSignIn }}>
+    <AuthContext.Provider
+      value={{ user, updatedCredentials, onSignIn, onSignOut }}
+    >
       {children}
     </AuthContext.Provider>
   );
