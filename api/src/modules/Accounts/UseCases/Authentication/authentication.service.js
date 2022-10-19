@@ -32,7 +32,7 @@ class AuthenticationService {
       process.env.JWT_SCRET_KEY,
       {
         subject: user.id,
-        expiresIn: "1d", // 1 day
+        expiresIn: 15, // 15 min
       }
     );
 

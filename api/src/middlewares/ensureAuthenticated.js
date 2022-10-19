@@ -13,7 +13,23 @@ async function ensureAuthenticated(req, res, next) {
   const [, accessToken] = authHeader.split(" ");
 
   try {
-    const { sub: user_id } = jwt.verify(accessToken, process.env.JWT_SCRET_KEY);
+    const { exp } = jwt.decode(accessToken);
+    console.log(exp);
+    console.log(new Date(exp));
+
+    const currentDate = new Date().getTime();
+    const isExpired = currentDate - exp;
+    console.log(isExpired);
+
+    if (isExpired < 0) {
+      return res.status(403).json({
+        error: "Expired accessToken",
+      });
+    }
+    const { sub: user_id, ...rest } = jwt.verify(
+      accessToken,
+      process.env.JWT_SCRET_KEY
+    );
 
     const user = await prisma.user.findFirst({
       where: {

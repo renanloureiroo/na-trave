@@ -1,7 +1,19 @@
 import jwt from "jsonwebtoken";
+import { prisma } from "../../../../database/prisma/index.js";
 
 class RefreshToken {
   async execute(token) {
+    const { sub, exp } = jwt.decode(token);
+
+    const user = await prisma.user.findFirst({
+      where: {
+        id: sub,
+      },
+    });
+
+    if (!user) {
+      throw new Error("User not found!");
+    }
     const isValid = jwt.verify(token, process.env.JWT_SCRET_KEY);
 
     if (!isValid) {
@@ -17,7 +29,7 @@ class RefreshToken {
       process.env.JWT_SCRET_KEY,
       {
         subject: user.id,
-        expiresIn: 60 * 15, // 15 min
+        expiresIn: 15 * 60, // 15 min
       }
     );
 
