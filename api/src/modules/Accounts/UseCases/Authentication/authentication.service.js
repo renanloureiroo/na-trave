@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt";
+import bcryptjs from "bcryptjs";
 
 import jwt from "jsonwebtoken";
 import { prisma } from "../../../../database/prisma/index.js";
@@ -17,7 +17,7 @@ class AuthenticationService {
       throw new Error("Email ou password incorrect!");
     }
 
-    const passwordMatch = await bcrypt.compare(password, user.password);
+    const passwordMatch = await bcryptjs.compare(password, user.password);
 
     if (!passwordMatch) {
       throw new Error("Email ou password incorrect!");
@@ -32,7 +32,7 @@ class AuthenticationService {
       process.env.JWT_SCRET_KEY,
       {
         subject: user.id,
-        expiresIn: 15, // 15 min
+        expiresIn: "15s", // 15 min
       }
     );
 

@@ -1,5 +1,5 @@
 import { prisma } from "../../../../database/prisma/index.js";
-import bcrypt from "bcrypt";
+import bcryptjs from "bcryptjs";
 
 class CreateAccountService {
   async execute({ name, email, username, password }) {
@@ -15,7 +15,7 @@ class CreateAccountService {
       throw new Error("User Already Exists!");
     }
 
-    const hashedPassword = await bcrypt.hash(password, 8);
+    const hashedPassword = await bcryptjs.hash(password, 8);
 
     const data = {
       name,
