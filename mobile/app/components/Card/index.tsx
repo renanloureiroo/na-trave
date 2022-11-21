@@ -12,7 +12,7 @@ export const Card = ({ data, onSubmitEditing }: CardProps) => {
   const gameId = data.id;
 
   return (
-    <View className="mb-2 rounded-2xl items-center p-4 border border-brand-gray3">
+    <View className="mb-2 rounded-2xl items-center p-4 border border-brand-gray3 shadow-md bg-brand-white1">
       <Text>{timeFormatted}</Text>
 
       <View className="flex-row w-full mt-2 items-center justify-between">
