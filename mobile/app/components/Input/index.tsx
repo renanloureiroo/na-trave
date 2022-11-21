@@ -1,13 +1,9 @@
 import React, { forwardRef, useState } from "react";
 import { Controller } from "react-hook-form";
-import { TextInput, View, Text } from "react-native";
+import { TextInput, View, Text, TouchableOpacity } from "react-native";
 import { InputProps } from "./Input.props";
 
 import Icon from "@expo/vector-icons/MaterialIcons";
-import { BorderlessButton } from "react-native-gesture-handler";
-import { styled } from "nativewind";
-
-const StyledBorderlessButton = styled(BorderlessButton);
 
 export const Input = forwardRef<TextInput, InputProps>(
   (
@@ -60,19 +56,19 @@ export const Input = forwardRef<TextInput, InputProps>(
 
               {password &&
                 (isVisible ? (
-                  <StyledBorderlessButton
+                  <TouchableOpacity
                     onPress={handleToggleVisibility}
                     className="mx-2"
                   >
                     <Icon name="visibility-off" color={"#91949D"} size={24} />
-                  </StyledBorderlessButton>
+                  </TouchableOpacity>
                 ) : (
-                  <StyledBorderlessButton
+                  <TouchableOpacity
                     onPress={handleToggleVisibility}
                     className="mx-2"
                   >
                     <Icon name="visibility" color={"#91949D"} size={24} />
-                  </StyledBorderlessButton>
+                  </TouchableOpacity>
                 ))}
             </View>
 

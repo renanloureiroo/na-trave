@@ -1,5 +1,14 @@
 import { useCallback, useEffect, useState } from "react";
-import { FlatList, ImageSourcePropType, Platform, View } from "react-native";
+import {
+  FlatList,
+  ImageSourcePropType,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native";
 import { differenceInCalendarDays } from "date-fns";
 
 import { Header } from "@components/Header";
@@ -10,21 +19,6 @@ import { api } from "@services/api";
 import { flags } from "../../../../utils/flags";
 import { HomeStackType } from "../../navigation/Home.stack";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
-
-const data = [
-  {
-    id: "1",
-    time: "10:00",
-  },
-  {
-    id: "2",
-    time: "12:00",
-  },
-  {
-    id: "3",
-    time: "14:00",
-  },
-];
 
 type HunchType = {
   id: string;
@@ -72,9 +66,11 @@ export const Home = () => {
     setCurrentDate(date);
   }, []);
 
-  const fetchData = async () => {
+  const fetchData = async (signal?: AbortSignal) => {
     try {
-      const { data } = await api.get<ResponseType[]>("/games");
+      const { data } = await api.get<ResponseType[]>("/games", {
+        signal,
+      });
 
       const dataFormatted = data.map((game) => {
         return {
@@ -112,7 +108,10 @@ export const Home = () => {
   };
 
   useEffect(() => {
-    fetchData();
+    const controller = new AbortController();
+    fetchData(controller.signal);
+
+    return () => controller.abort();
   }, []);
 
   const gamesFiltered = games.filter((game) => {
@@ -125,12 +124,16 @@ export const Home = () => {
 
   const handleSendScore = useCallback(
     async (scores: ScoresType, gameId: string) => {
-      const response = await api.post("/hunchs", {
-        gameId,
-        ...scores,
-      });
+      try {
+        await api.post("/hunchs", {
+          gameId,
+          ...scores,
+        });
 
-      await fetchData();
+        await fetchData();
+      } catch (err) {
+        console.log(err);
+      }
     },
     []
   );
@@ -140,19 +143,27 @@ export const Home = () => {
   }, []);
 
   return (
-    <View className="flex-1 bg-brand-white1">
-      <Header big name="Renan" iconFunction={handleGoProfile} />
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      className="flex-1 pb-4"
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View className="flex-1 bg-brand-white1">
+          <Header big name="Renan" iconFunction={handleGoProfile} />
 
-      <DateSelect date={currentDate} onSetDate={handleSetCurrentDate} />
+          <DateSelect date={currentDate} onSetDate={handleSetCurrentDate} />
 
-      <FlatList
-        data={gamesFiltered}
-        renderItem={({ item }) => (
-          <Card onSubmitEditing={handleSendScore} data={item} />
-        )}
-        keyExtractor={(item) => item.id}
-        className="px-6"
-      />
-    </View>
+          <ScrollView showsVerticalScrollIndicator={false} className="px-6">
+            {gamesFiltered.map((item) => (
+              <Card
+                key={item.id}
+                onSubmitEditing={handleSendScore}
+                data={item}
+              />
+            ))}
+          </ScrollView>
+        </View>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };

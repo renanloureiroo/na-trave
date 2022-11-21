@@ -25,15 +25,15 @@ export const Card = ({ data, onSubmitEditing }: CardProps) => {
 
         <InputCircle
           value={String(homeTeamScore)}
-          onBlur={async () =>
+          onBlur={async () => {
             await onSubmitEditing(
               {
                 homeTeamScore: Number(homeTeamScore),
                 awayTeamScore: Number(awayTeamScore),
               },
               gameId
-            )
-          }
+            );
+          }}
           onChangeText={(value) => setHomeScore(Number(value))}
         />
         <Text className="text-base text-brand-red2">X</Text>

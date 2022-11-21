@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { Text, View } from "react-native";
-import { BorderlessButton } from "react-native-gesture-handler";
+import { Text, TouchableOpacity, View } from "react-native";
 
 import { format, subDays, addDays } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -25,17 +24,17 @@ export const DateSelect = ({ date, onSetDate }: DateSelectProps) => {
   };
   return (
     <View className="flex-row my-8 w-full items-center justify-center">
-      <BorderlessButton onPress={prevDay}>
+      <TouchableOpacity onPress={prevDay}>
         <IconArrowLeft width={24} height={24} color={"#AF053F"} />
-      </BorderlessButton>
+      </TouchableOpacity>
 
       <Text className="mx-8 font-bold text-base text-brand-red1">
         {format(date, "d 'de' MMMM", { locale: ptBR })}
       </Text>
 
-      <BorderlessButton onPress={nextDay}>
+      <TouchableOpacity onPress={nextDay}>
         <IconArrowRight width={24} height={24} color={"#AF053F"} />
-      </BorderlessButton>
+      </TouchableOpacity>
     </View>
   );
 };
