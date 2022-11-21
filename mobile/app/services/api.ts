@@ -9,8 +9,6 @@ interface AxiosConfig extends AxiosRequestConfig {
   _retry: boolean;
 }
 
-let failedQueue = [];
-
 const api = axios.create({
   baseURL,
 });
@@ -21,23 +19,28 @@ api.interceptors.response.use(
   },
 
   async (error: AxiosError) => {
-    const credentials = await AsyncStorage.getItem("naTrave:credentials");
-    const { accessToken, refreshToken } = JSON.parse(credentials);
-
     const originalRequest = error.config as AxiosConfig;
 
-    if (error.response.status === 403 && !originalRequest._retry) {
+    if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
+      const credentials = await AsyncStorage.getItem("naTrave:credentials");
+      const { accessToken, refreshToken } = JSON.parse(credentials);
 
-      const { data } = await api.post("/users/refreshToken", {
-        refreshToken,
-      });
+      try {
+        const { data } = await api.post("/users/refreshToken", {
+          refreshToken,
+        });
 
-      await AsyncStorage.setItem("naTrave:credentials", JSON.stringify(data));
+        await AsyncStorage.setItem("naTrave:credentials", JSON.stringify(data));
 
-      api.defaults.headers.common[
-        "Authorization"
-      ] = `Bearer ${data.accessToken}`;
+        api.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${data.accessToken}`;
+
+        return api(originalRequest);
+      } catch (err) {
+        return Promise.reject(err);
+      }
     }
 
     return Promise.reject(error);
