@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Image, ImageSourcePropType, Text, View } from "react-native";
+import { Image, Text, View } from "react-native";
 import { InputCircle } from "../InputCircle";
 import { CardProps } from "./Card.props";
 import { format } from "date-fns/esm";
