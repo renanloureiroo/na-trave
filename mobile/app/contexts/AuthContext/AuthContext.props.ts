@@ -11,6 +11,7 @@ export type Credentials = {
 
 export type AuthContextType = {
   user: User;
+  rehydrated: boolean;
   updatedCredentials: (credentials: Credentials) => void;
   onSignIn: (user: User, credentials: Credentials) => void;
   onSignOut: () => void;

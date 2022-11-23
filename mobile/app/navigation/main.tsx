@@ -7,18 +7,22 @@ import { AuthenticationStack } from "../features/Authentication/navigation/Authe
 const { Navigator, Screen } = createNativeStackNavigator();
 
 export const MainStack = () => {
-  const { user } = useAuth();
-  return (
+  const { user, rehydrated } = useAuth();
+  return !rehydrated ? null : user ? (
     <Navigator
       screenOptions={{
         headerShown: false,
       }}
     >
-      {!user ? (
-        <Screen name="Authentication" component={AuthenticationStack} />
-      ) : (
-        <Screen name="Authenticated" component={HomeStack} />
-      )}
+      <Screen name="Authenticated" component={HomeStack} />
+    </Navigator>
+  ) : (
+    <Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <Screen name="Authentication" component={AuthenticationStack} />
     </Navigator>
   );
 };
