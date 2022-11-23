@@ -23,7 +23,7 @@ const CREDENTIALS_KEY = "naTrave:credentials";
 export const AuthContextProvider = ({ children }: AuthContextProviderType) => {
   const [user, setUser] = useState<User>(null);
   const [credentials, setCredentials] = useState<Credentials>(null);
-  const [rehydrated, setRehydrate] = useState<boolean>(false);
+  const [rehydrated, setRehydrated] = useState<boolean>(false);
 
   const { getData, setData, clear } = useAsyncStorage();
 
@@ -59,7 +59,7 @@ export const AuthContextProvider = ({ children }: AuthContextProviderType) => {
         console.log(err);
       } finally {
         console.log("rehydrated");
-        setRehydrate(true);
+        setRehydrated(true);
       }
     };
     rehydrated();
